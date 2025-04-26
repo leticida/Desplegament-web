@@ -46,17 +46,17 @@ class Modificar {
                             <input type="hidden" name="id" value="' . $producto['id'] . '">
 
                             <div class="mb-3">
-                                <label for="nom" class="form-label">Nombre:</label>
+                                <label for="nom" class="form-label">Nombre del producto:</label>
                                 <input type="text" name="nom" class="form-control" value="' . $producto['nom'] . '" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="descripcio" class="form-label">Descripción:</label>
+                                <label for="descripcio" class="form-label">Descripción detallada:</label>
                                 <input type="text" name="descripcio" class="form-control" value="' . $producto['descripció'] . '" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="preu" class="form-label">Precio:</label>
+                                <label for="preu" class="form-label">Precio total por unidad:</label>
                                 <input type="number" name="preu" class="form-control" value="' . $producto['preu'] . '" required>
                             </div>
 
