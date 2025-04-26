@@ -3,16 +3,33 @@
 require_once('Connexio.php');
 require_once('Header.php');
 
+/**
+ * Classe NouProducte per a afegir nous productes a la base de dades.
+ */
 class NouProducte {
 
+    /**
+     * Connexió a la base de dades.
+     *
+     * @var mysqli
+     */
     private $connexio;
 
+    /**
+     * Constructor de la classe.
+     *
+     * Estableix la connexió amb la base de dades.
+     */
     public function __construct() {
         $conexionObj = new Connexio();
         $this->connexio = $conexionObj->obtenirConnexio();
     }
 
-    // Funció per mostrar el formulari
+    /**
+     * Mostra el formulari HTML per afegir un nou producte.
+     *
+     * @return void
+     */
     public function mostrarFormulari() {
         // Consulta les categories
         $consulta = "SELECT id, nom FROM categories";
@@ -63,7 +80,16 @@ class NouProducte {
         require_once('Footer.php');
     }
 
-    // Funció per afegir el producte
+    /**
+     * Afegeix un nou producte a la base de dades.
+     *
+     * @param string $nom Nom del producte.
+     * @param string $descripcio Descripció del producte.
+     * @param float $preu Preu del producte.
+     * @param int $categoria_id ID de la categoria associada.
+     *
+     * @return void
+     */
     public function afegirProducte($nom, $descripcio, $preu, $categoria_id) {
         $stmt = $this->connexio->prepare("INSERT INTO productes (nom, descripció, preu, categoria_id) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssdi", $nom, $descripcio, $preu, $categoria_id);

@@ -1,10 +1,22 @@
 <?php
 require_once('Connexio.php');
 
+/**
+ * Classe Eliminar
+ * 
+ * Gestiona l'eliminació d'un producte de la base de dades.
+ */
 class Eliminar {
 
+    /**
+     * Elimina un producte donat el seu ID.
+     *
+     * @param int|string $id ID del producte a eliminar.
+     * 
+     * @return void
+     */
     public function eliminarProducte($id) {
-        // Comprovar que l'ID sigui vàlid
+        // Comprova que l'ID sigui vàlid
         if (!isset($id) || empty($id)) {
             echo '<p>ID de producte no vàlid.</p>';
             return;
@@ -17,14 +29,16 @@ class Eliminar {
         // Consulta per eliminar el producte
         $consulta = "DELETE FROM productes WHERE id = ?";
         $stmt = $connexio->prepare($consulta);
-        $stmt->bind_param("s", $id); // "s" per a string (no "i" com a integer)
+
+        // rebem l'ID hauria de tipus string
+        $stmt->bind_param("s", $id);
 
         if ($stmt->execute()) {
             // Redirigir a Principal.php si l'eliminació té èxit
             header("Location: Principal.php");
             exit();
         } else {
-            echo '<p>Error en eliminar el producte.</p>';
+            echo '<p>Error en eliminar el producte: ' . $stmt->error . '</p>';
         }
 
         // Tancar connexions
@@ -36,7 +50,7 @@ class Eliminar {
 // Obtenir l'ID del producte des de la URL (GET)
 $idProducte = isset($_GET['id']) ? $_GET['id'] : null;
 
-// Crear instància i cridar la funció
+// Crear instància de la classe Eliminar i cridar la funció eliminarProducte
 $eliminarProducte = new Eliminar();
 $eliminarProducte->eliminarProducte($idProducte);
 

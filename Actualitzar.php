@@ -1,58 +1,73 @@
 <?php
 
-// Incluye el archivo de conexión
+// Inclou l'arxiu de connexió
 require_once('Connexio.php');
 
+/**
+ * Classe Actualitzar
+ * 
+ * Gestiona l'actualització d'un producte existent a la base de dades.
+ */
 class Actualitzar {
-    
-    // Método para actualizar un producto en la base de datos
+
+    /**
+     * Actualitza un producte amb els valors proporcionats.
+     *
+     * @param int|string $id ID del producte.
+     * @param string $nom Nom del producte.
+     * @param string $descripcio Descripció del producte.
+     * @param float|string $preu Preu del producte.
+     * @param int|string $categoria ID de la categoria del producte.
+     * 
+     * @return void
+     */
     public function actualizar($id, $nom, $descripcio, $preu, $categoria) {
-        // Verifica si todos los campos requeridos están presentes
-        if (!isset($id) || !isset($nom) || !isset($descripcio) || !isset($preu) || !isset($categoria)) {
-            echo '<p>Se requieren todos los campos para actualizar el producto.</p>';
+        // Verifica que tots els camps requerits estiguin presents
+        if (!isset($id, $nom, $descripcio, $preu, $categoria)) {
+            echo '<p>Es requereixen tots els camps per actualitzar el producte.</p>';
             return;
         }
 
-        // Crea una instancia de la clase de conexión
+        // Crea una instància de connexió
         $conexionObj = new Connexio();
-        // Obtiene la conexión a la base de datos
         $conexion = $conexionObj->obtenirConnexio();
 
-        // Escapa las variables para prevenir SQL injection
-        $id = $conexion->real_escape_string($id);
-        $nom = $conexion->real_escape_string($nom);
-        $descripcio = $conexion->real_escape_string($descripcio);
-        $preu = $conexion->real_escape_string($preu);
-        $categoria = $conexion->real_escape_string($categoria);
+        // Utilitza consulta preparada per evitar SQL Injection
+        $consulta = "UPDATE productes 
+                     SET nom = ?, descripció = ?, preu = ?, categoria_id = ? 
+                     WHERE id = ?";
+        $stmt = $conexion->prepare($consulta);
+        
+        if (!$stmt) {
+            echo '<p>Error en preparar la consulta: ' . $conexion->error . '</p>';
+            return;
+        }
 
-        // Construye la consulta SQL de actualización
-        $consulta = "UPDATE productes
-                     SET nom = '$nom', descripció = '$descripcio', preu = '$preu', categoria_id = '$categoria'
-                     WHERE id = '$id'";
+        // Lliga els paràmetres: ssdi = string, string, double, integer
+        $stmt->bind_param("ssdii", $nom, $descripcio, $preu, $categoria, $id);
 
-        // Ejecuta la consulta y redirige a la página principal si tiene éxito
-        if ($conexion->query($consulta) === TRUE) {
+        if ($stmt->execute()) {
             header('Location: Principal.php');
             exit();
         } else {
-            // Muestra un mensaje de error si la consulta falla
-            echo '<p>Error al actualizar el producto: ' . $conexion->error . '</p>';
+            echo '<p>Error en actualitzar el producte: ' . $stmt->error . '</p>';
         }
 
-        // Cierra la conexión a la base de datos
+        // Tanca la connexió
+        $stmt->close();
         $conexion->close();
     }
 }
 
-// Obtiene los valores del formulario (si existen)
+// Obté els valors del formulari
 $id = isset($_POST['id']) ? $_POST['id'] : null;
 $nom = isset($_POST['nom']) ? $_POST['nom'] : null;
 $descripcio = isset($_POST['descripcio']) ? $_POST['descripcio'] : null;
 $preu = isset($_POST['preu']) ? $_POST['preu'] : null;
 $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : null;
 
-// Crea una instancia de la clase Actualitzar y llama al método actualizar
-$actualizarProducto = new Actualitzar();
-$actualizarProducto->actualizar($id, $nom, $descripcio, $preu, $categoria);
+// Crea una instància de la classe i actualitza el producte
+$actualitzarProducte = new Actualitzar();
+$actualitzarProducte->actualizar($id, $nom, $descripcio, $preu, $categoria);
 
 ?>
