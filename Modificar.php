@@ -5,11 +5,11 @@ require_once('Header.php');
 
 class Modificar {
 
-    // Método para mostrar el formulario de modificación del producto
+    // Método para mostrar el formulario de modificación del producte$producte
     public function mostrarFormulari($id) {
-        // Verifica si el ID del producto es válido
+        // Verifica si el ID del producte$producte es válido
         if (!isset($id) || !is_numeric($id)) {
-            echo '<p>ID de producto no válido.</p>';
+            echo '<p>ID de producte$producte no válido.</p>';
             return;
         }
 
@@ -17,19 +17,19 @@ class Modificar {
         $conexionObj = new Connexio();
         $conexion = $conexionObj->obtenirConnexio();
 
-        // Consulta para obtener la información del producto
+        // Consulta para obtener la información del producte$producte
         $consulta = "SELECT id, nom, descripció, preu, categoria_id
                      FROM productes
                      WHERE id = " . $id;
-        $resultado = $conexion->query($consulta);
+        $resultat = $conexion->query($consulta);
 
-        // Verifica si se encontró el producto
-        if ($resultado && $resultado->num_rows > 0) {
-            $producto = $resultado->fetch_assoc();
+        // Verifica si se encontró el producte$producte
+        if ($resultat && $resultat->num_rows > 0) {
+            $producte = $resultat->fetch_assoc();
 
             // Imprime la estructura HTML del formulario de modificación
             echo '<!DOCTYPE html>
-                  <html lang="es">
+                  <html lang="cat">
                   <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,30 +42,30 @@ class Modificar {
                         <h2>Modificar producte</h2>
                         <hr>
                         <form action="Actualitzar.php" method="POST">
-                            <!-- Campos del formulario con la información actual del producto -->
-                            <input type="hidden" name="id" value="' . $producto['id'] . '">
+                            <!-- Campos del formulario con la información actual del producte$producte -->
+                            <input type="hidden" name="id" value="' . $producte['id'] . '">
 
                             <div class="mb-3">
-                                <label for="nom" class="form-label">Nombre:</label>
-                                <input type="text" name="nom" class="form-control" value="' . $producto['nom'] . '" required>
+                                <label for="nom" class="form-label">Nom:</label>
+                                <input type="text" name="nom" class="form-control" value="' . $producte['nom'] . '" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="descripcio" class="form-label">Descripción:</label>
-                                <input type="text" name="descripcio" class="form-control" value="' . $producto['descripció'] . '" required>
+                                <label for="descripcio" class="form-label">Descripció:</label>
+                                <input type="text" name="descripcio" class="form-control" value="' . $producte['descripció'] . '" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="preu" class="form-label">Precio:</label>
-                                <input type="number" name="preu" class="form-control" value="' . $producto['preu'] . '" required>
+                                <label for="preu" class="form-label">Preu:</label>
+                                <input type="number" name="preu" class="form-control" value="' . $producte['preu'] . '" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="categoria" class="form-label">Categoría:</label>
+                                <label for="categoria" class="form-label">Categoria:</label>
                                 <select name="categoria" class="form-select" required>
                                     <!-- Opciones del selector de categorías con la opción seleccionada según la información actual -->
-                                    <option value="1" ' . ($producto['categoria_id'] == 1 ? 'selected' : '') . '>Electrónicos</option>
-                                    <option value="2" ' . ($producto['categoria_id'] == 2 ? 'selected' : '') . '>Roba</option>
+                                    <option value="1" ' . ($producte['categoria_id'] == 1 ? 'selected' : '') . '>Electrònics</option>
+                                    <option value="2" ' . ($producte['categoria_id'] == 2 ? 'selected' : '') . '>Roba</option>
                                     <!-- Agrega más opciones según sea necesario -->
                                 </select>
                             </div>
@@ -74,7 +74,7 @@ class Modificar {
 
                             <hr>
                             <!-- Botones de guardar y cancelar -->
-                            <input type="submit" value="Guardar" class="btn btn-primary">
+                            <input type="submit" value="Desar" class="btn btn-primary">
                             <a href="Principal.php" class="btn btn-secondary">Cancelar</a>
                         </form>
                     </div>';
@@ -82,7 +82,7 @@ class Modificar {
             // Incluye el pie de página
             require_once('Footer.php');
         } else {
-            echo '<p>No se encontró el producto.</p>';
+            echo '<p>No hem trobat el producte$producte.</p>';
         }
 
         // Cierra la conexión a la base de datos
@@ -90,7 +90,7 @@ class Modificar {
     }
 }
 
-// Obtiene el ID del producto de la variable GET
+// Obtiene el ID del producte$producte de la variable GET
 $idProducto = isset($_GET['id']) ? $_GET['id'] : null;
 
 // Crea una instancia de la clase Modificar y llama al método mostrarFormulari
